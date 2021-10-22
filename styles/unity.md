@@ -88,3 +88,37 @@ public void SayHi(string name)
 - スクリプトファイルは全部UTF-8 w/ BOM
 - ほかはUTF-8とかそのへん。Shift JISは帰れ
 - 改行 (LF or CRLF) はどっちかに統一
+
+# Unity 開発Tips
+
+## 小さく一時的なメモリ割り当てを避ける
+
+### Why
+
+本当はこういう割り当ては世代別GCがうまくやってくれるんだけど、[UnityのGCは世代別じゃない](https://docs.unity3d.com/ja/2021.1/Manual/BestPracticeUnderstandingPerformanceInUnity4-1.html)🥺🥺
+
+### ボックス化
+
+```cs
+// More memory
+label.text = $"HP: {health}";
+// Less memory
+label.text = $"HP: {health.ToString()}";
+```
+
+補完文字列内の値は`object`引数らしくボックス化される。その前に`ToString()`すれば避けられるとかなんとか
+
+### `UnityEngine.Object.name`
+
+```cs
+// More memory
+if (icon.sprite.name == iconSprite) return;
+
+// Less memory
+if (spriteName == iconSprite) return;
+spriteName = iconSprite;
+
+icon.sprite = Resources.Load(iconSprite);
+```
+
+`UnityEngine.Object.name`は見るだけで割り当てが起きる…まじか
