@@ -133,6 +133,22 @@ namespace MyProject.Scene.Title{
 }
 ```
 
+## ちょっと待って！！そのpublic、本当に必要？
+
+```cs
+// before
+public TextMeshProUGUI title;
+
+// after
+// 「textしか変えなそうな仕様だったからtextしか変えられなくしたよ」的な
+[SerializeField] private TextMeshProUGUI title;
+public string Title { set => title.text = value; }
+```
+
+- 要はチームメイトがどこからでもコンポーネントをいじり放題なのがやだ
+- publicにする理由が「Inspectorで見たいから」**だけ**ならとりあえずやめてみる
+- コンポーネント全体が必要か考えて (たぶんそうじゃないぞ) プロパティをうまく使おう
+
 ## 小さく一時的なメモリ割り当てを避けよう
 
 ### Why
