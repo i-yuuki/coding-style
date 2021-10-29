@@ -2,6 +2,8 @@
 
 参考にしたスタイル、改変した部分、自作の部分、特記事項まとめ
 
+後半の[Tips](#Unity-開発Tips)もぜひ
+
 ## フォーマット
 
 **🧡 採用**: Visual Studio デフォルト C# スタイル
@@ -91,7 +93,47 @@ public void SayHi(string name)
 
 # Unity 開発Tips
 
-## 小さく一時的なメモリ割り当てを避ける
+## フォルダを分けよう
+
+シーン固有のスクリプトを分けてみたり
+
+```plaintext
+Assets/
+└ Scripts/
+  ├ Item/
+  ├ Scene/ # <------------
+  │ ├ Title/
+  │ │ └ TitleScreen.cs
+  │ └ Game/
+  │    └ LevelManager.cs
+  └ Utils/
+```
+
+スクリプト以外も分けてみたり
+
+```plaintext
+Assets/
+├ Prefabs/
+│ ├ Title/
+│ └ Game/
+└ Textures/
+   └ Scene/ # こうしてもワンチャン
+     ├ Title/
+     └ Game/
+```
+
+## 名前空間を使おう
+
+もう一度…やってみないか…<ruby><rb>あの頃</rb><rt>Java</rt></ruby>みたいに…
+
+```cs
+namespace MyProject.Scene.Title{
+  public sealed class TitleScreen : MonoBehaviour{
+  }
+}
+```
+
+## 小さく一時的なメモリ割り当てを避けよう
 
 ### Why
 
