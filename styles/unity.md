@@ -180,3 +180,23 @@ icon.sprite = Resources.Load(iconSprite);
 ```
 
 `UnityEngine.Object.name`は見るだけで割り当てが起きる…まじか
+
+## オブジェクトチェックの罠
+
+`Destroy()`したGameObjectを`null`扱いできるのは`==`がオーバーロードされてるからなので、内部的に`==`が呼ばれない比較はほぼ機能しない
+
+```cs
+// ✅ オブジェクトがなければreturn
+if(!obj) return;
+if(obj == null) return;
+
+// ⚠ オブジェクトがあってもなくてもreturnしない
+if(obj is null) return;
+
+// ⚠ オブジェクトがないとMissingReferenceException
+obj?.CompareTag("hey");
+```
+
+Unity 2022でもなるから他人事じゃないよ。めっちゃ`is null`してる人いたので注意！！
+
+ちなみにJetBrains Riderだと警告してくれる模様。欲しい！
